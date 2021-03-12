@@ -1,0 +1,98 @@
+package main
+
+import (
+	"bufio"
+	"fairBilling/extract_end_sessions"
+	"fairBilling/validate"
+	"fmt"
+	"log"
+	"os"
+	"time"
+)
+
+type Session struct {
+	SessionCount int
+	Duration     float64
+}
+
+var (
+	UserMap = map[string]Session{}
+)
+
+func main() {
+	file, err := os.Open("./input.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		isValid, parts := validate.ValidateLine(scanner.Text())
+		if isValid {
+			extract_end_sessions.EndSessions(parts)
+		}
+	}
+	Task()
+	EndTask()
+	fmt.Println(UserMap)
+}
+
+func Task() {
+	file, err := os.Open("./input.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	scanners := bufio.NewScanner(file)
+	for scanners.Scan() {
+		isValid, parts := validate.ValidateLine(scanners.Text())
+		if isValid {
+			if parts[2] == `Start` {
+				for id, elem := range extract_end_sessions.SessionEndDetails {
+					if elem.Name == parts[1] && elem.IsCompleted == false {
+						tn, _ := time.Parse("15:04:05", parts[0])
+						sessionTime := elem.Timestamp.Sub(tn).Seconds()
+						UserMap[parts[1]] = Session{
+							SessionCount: UserMap[parts[1]].SessionCount + 1,
+							Duration:     UserMap[parts[1]].Duration + sessionTime,
+						}
+						extract_end_sessions.SessionEndDetails[id].IsCompleted = true
+						break
+					} else if elem.Name == parts[1] && elem.IsCompleted == true {
+						tn, _ := time.Parse("15:04:05", parts[0])
+						sessionTime := extract_end_sessions.FinalTime.Sub(tn).Seconds()
+						UserMap[parts[1]] = Session{
+							SessionCount: UserMap[parts[1]].SessionCount + 1,
+							Duration:     UserMap[parts[1]].Duration + sessionTime,
+						}
+						break
+					}
+				}
+
+			}
+			if _, ok := UserMap[parts[1]]; !ok && parts[2] == `Start` {
+				tn, _ := time.Parse("15:04:05", parts[0])
+				sessionTime := extract_end_sessions.FinalTime.Sub(tn).Seconds()
+				UserMap[parts[1]] = Session{
+					SessionCount: UserMap[parts[1]].SessionCount + 1,
+					Duration:     UserMap[parts[1]].Duration + sessionTime,
+				}
+			}
+		}
+
+	}
+
+}
+
+func EndTask() {
+	for _, elem := range extract_end_sessions.SessionEndDetails {
+		fmt.Println(elem)
+	}
+}
+
+// if elem.IsCompleted == false {
+// 	sessionTime := elem.Timestamp.Sub(extract_end_sessions.InitialTime).Seconds()
+// 	UserMap[elem.Name] = Session{
+// 		SessionCount: UserMap[elem.Name].SessionCount + 1,
+// 		Duration:     UserMap[elem.Name].Duration + sessionTime,
+// 	}
+// }
