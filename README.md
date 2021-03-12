@@ -30,6 +30,11 @@ Your program should take a single command line parameter, which will be the path
 Finally, you should note that, as with most log files, there may be other invalid or irrelevant data within the file. Therefore, any lines that do not contain a valid time-stamp, username and a Start or End marker should be silently ignored and not included in any calculations.
 
 
+Requirements:
+-----------------
+
+1. go 1.14
+
 How to Run:
 -----------------
 
@@ -37,7 +42,7 @@ How to Run:
 
 	go build -o fairbilling main.go
 
-2. run the application by the following command (provide the path of input txt file like the command below)
+2. run the application by the following command (provide the path of input txt file like the command below) 
 
 	./fairbilling /Users/Name/Desktop/FairBilling/input.txt
 
