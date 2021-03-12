@@ -45,5 +45,6 @@ How to Run:
 
 Output:
 -----------------
-CHARLIE 3 37 
-ALICE99 4 240 
+    CHARLIE 3 37
+
+	ALICE99 4 240 
