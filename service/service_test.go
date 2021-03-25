@@ -7,7 +7,7 @@ import (
 )
 
 func TestCalculateSession(t *testing.T) {
-	fbService := NewFairBillingService("../testFiles/test_input.txt")
+	fbService := NewFairBillingService("../test_files/test_input.txt")
 	actualOutput := fbService.CalculateSession()
 	expectedOutput := map[string]Session{
 		"ALICE99": {SessionCount: 4, Duration: 240},
@@ -18,7 +18,7 @@ func TestCalculateSession(t *testing.T) {
 }
 
 func TestCalculateSessionHavingPreperEndStatus(t *testing.T) {
-	fbService := NewFairBillingService("../testFiles/test_proper_end_status.txt")
+	fbService := NewFairBillingService("../test_files/test_proper_end_status.txt")
 	actualOutput := fbService.CalculateSession()
 	expectedOutput := map[string]Session{
 		"ALICE99": {SessionCount: 2, Duration: 33},
@@ -29,10 +29,8 @@ func TestCalculateSessionHavingPreperEndStatus(t *testing.T) {
 }
 
 func TestCalculateSessionInputHavingError(t *testing.T) {
-	fbService := NewFairBillingService("../testFiles/test_error.txt")
+	fbService := NewFairBillingService("../test_files/test_error.txt")
 	actualOutput := fbService.CalculateSession()
 	expectedOutput := map[string]Session{}
 	assert.Equal(t, &expectedOutput, actualOutput)
 }
-
-

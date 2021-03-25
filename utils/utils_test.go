@@ -48,13 +48,13 @@ func TestValidateLineFailIfFormatNotValid(t *testing.T) {
 }
 
 func TestOpenFile(t *testing.T) {
-	input := "../testFiles/test_input.txt"
+	input := "../test_files/test_input.txt"
 	actualOutput := FairBillingUtils.OpenFile(input)
 	assert.NotNil(t, actualOutput)
 }
 
 func TestOpenFileReturnsNilIfNoFile(t *testing.T) {
-	input := "../testFiles/test_test.txt"
+	input := "../test_files/test_test.txt"
 	actualOutput := FairBillingUtils.OpenFile(input)
 	assert.Nil(t, actualOutput)
 
